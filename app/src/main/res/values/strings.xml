@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Reeflix</string>
+    <string name="heading_text">My video</string>
+    <string name="roboto_slab_bold" translatable="false">fonts/RobotoSlab-Bold.ttf</string>
+    <string name="roboto_bold" translatable="false">fonts/Roboto-Bold.ttf</string>
+    <string name="description_text">this video looks good</string>
+    <string name="subscribe_btn_text">Play</string>
+    <string name="pleasewait_text">please wait…</string>
+    <string name="pleasewait">loading</string>
+</resources>
