@@ -5,6 +5,7 @@
     <color name="colorAccent">#FF4081</color>
     <color name="app_theme">#E53935</color>
     <color name="theme">#D32F2F</color>
+    <color name="bgBottomNavigation">#fe485a</color>
 
     <!-- Red -->
     <color name="red_50">#FFEBEE</color>
@@ -107,7 +108,7 @@
     <color name="blue_A200">#448AFF</color>
     <color name="blue_A400">#2979FF</color>
     <color name="blue_A700">#2962FF</color>
-    <color name="appthemecolor">#415bef</color>
+    <color name="appthemecolor">#D32F2F</color>
     <color name="app_theme_color_light">#949cce</color>
     <!-- Blue -->
 
@@ -504,17 +505,17 @@
 
 
     <!-- dots inactive colors -->
-    <color name="dot_dark_screen1">#415bef</color>
-    <color name="dot_dark_screen2">#415bef</color>
-    <color name="dot_dark_screen3">#415bef</color>
-    <color name="dot_dark_screen4">#415bef</color>
+    <color name="dot_dark_screen1">@color/appthemecolor</color>
+    <color name="dot_dark_screen2">@color/appthemecolor</color>
+    <color name="dot_dark_screen3">@color/appthemecolor</color>
+    <color name="dot_dark_screen4">@color/appthemecolor</color>
 
 
     <!-- dots active colors -->
-    <color name="dot_light_screen1">#82B1FF</color>
-    <color name="dot_light_screen2">#82B1FF</color>
-    <color name="dot_light_screen3">#82B1FF</color>
-    <color name="dot_light_screen4">#82B1FF</color>
+    <color name="dot_light_screen1">@color/OrangeRedDark</color>
+    <color name="dot_light_screen2">@color/OrangeRedDark</color>
+    <color name="dot_light_screen3">@color/OrangeRedDark</color>
+    <color name="dot_light_screen4">@color/OrangeRedDark</color>
 
     <array name="array_dot_active">
         <item>@color/dot_light_screen1</item>

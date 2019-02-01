@@ -4,118 +4,403 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/Black"
+    android:background="@color/black"
     tools:context=".VideoDescription">
+
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp">
+            android:orientation="vertical">
+
+
             <RelativeLayout
+                android:id="@+id/videoLayout"
                 android:layout_width="match_parent"
-                android:layout_height="180dp"
-                android:id="@+id/videoLayout">
+                android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/eventImage"
-                android:layout_width="match_parent"
-                android:layout_height="180dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/cartoon" />
+                <!-- origin height = 190 -->
+                <ImageView
+                    android:id="@+id/eventImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@null"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/video_player_placeholder" />
 
-            <ImageButton
-                android:id="@+id/subscribe"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:src="@drawable/playbutton"
-                />
+                <RelativeLayout
+                    android:id="@+id/image_movie_poster_wrapper"
+                    android:layout_width="113dp"
+                    android:layout_height="173dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="160dp"
+                    android:background="@drawable/border_image"
+                    android:contentDescription="@null">
+
+                    <ImageView
+                        android:id="@+id/image_movie_poster"
+                        android:layout_width="110dp"
+                        android:layout_height="170dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/poster" />
+
+                </RelativeLayout>
+
+                <customfonts.MyTextView_Roboto_Bold
+                    android:id="@+id/eventName"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/eventImage"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_toRightOf="@id/image_movie_poster_wrapper"
+                    android:gravity="center_vertical"
+                    android:text="@string/title"
+                    android:textAppearance="?android:textAppearanceLarge"
+                    android:textColor="@color/appthemecolor"
+                    android:textSize="18sp" />
+
+                <customfonts.MyTextView_Roboto_Regular
+                    android:id="@+id/type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/eventName"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_toRightOf="@id/image_movie_poster_wrapper"
+                    android:text="@string/romantic_comedy_action"
+                    android:textColor="#6e6e6e"
+                    android:textSize="12sp" />
+
+                <ImageView
+                    android:id="@+id/subscribe"
+                    android:layout_width="60dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="200dp"
+                    android:src="@drawable/play" />
+
+                <!-- <TextView
+                     android:id="@+id/text_duration"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:layout_alignLeft="@id/type"
+                     android:layout_below="@id/type"
+                     android:layout_marginTop="5dp"
+                     android:drawableLeft="@drawable/duration"
+                     android:drawablePadding="4dp"
+                     android:gravity="center_vertical"
+                     android:text="@string/_130_mins"
+                     android:textColor="#6e6e6e"
+                     android:textSize="12sp" />-->
+
+                <LinearLayout
+                    android:id="@+id/age_duration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@id/type"
+                    android:layout_below="@id/type"
+                    android:layout_marginTop="8dp">
+
+                    <RelativeLayout
+                        android:layout_width="30dp"
+                        android:layout_height="15dp"
+                        android:background="@drawable/greyroundshape">
+
+                        <customfonts.MyTextView_Roboto_Medium
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:text="20"
+                            android:textColor="#fff"
+                            android:textSize="10sp" />
+
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="30dp"
+                        android:layout_height="15dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/roundshape">
+
+                        <customfonts.MyTextView_Roboto_Medium
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:text="BEN"
+                            android:textColor="#fff"
+                            android:textSize="10sp" />
+
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="30dp"
+                        android:layout_height="15dp"
+                        android:background="@drawable/roundshape">
+
+                        <customfonts.MyTextView_Roboto_Medium
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:text="18+"
+                            android:textColor="#fff"
+                            android:textSize="10sp" />
+
+
+                    </RelativeLayout>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/date_duration"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@id/age_duration"
+                    android:layout_below="@id/age_duration"
+                    android:layout_marginTop="8dp">
+
+
+                    <customfonts.MyTextView_Roboto_Regular
+                        android:id="@+id/text_duration"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:drawableLeft="@drawable/duration"
+                        android:drawablePadding="4dp"
+                        android:gravity="center_vertical"
+                        android:text="@string/_130_mins"
+                        android:textColor="#6e6e6e"
+                        android:textSize="12sp" />
+
+                    <customfonts.MyTextView_Roboto_Regular
+                        android:id="@+id/text_release_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:drawableLeft="@drawable/date"
+                        android:drawablePadding="4dp"
+                        android:gravity="center_vertical"
+                        android:text="@string/_01st_january_2019"
+                        android:textColor="#6e6e6e"
+                        android:textSize="12sp" />
+
+
+                </LinearLayout>
+
+
             </RelativeLayout>
+
+            <!-- <android.support.design.widget.FloatingActionButton
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_alignParentRight="true"
+                 android:layout_marginRight="20dp"
+                 android:layout_marginTop="290dp"
+                 android:src="@drawable/playbutton"
+                 app:backgroundTint="#ce471d"
+                 app:elevation="15dp"
+                 app:fabSize="normal"
+                 />-->
+
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/videoLayout"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp">
+                android:layout_below="@+id/image_movie_poster"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="10dp">
 
-                <TextView
-                    android:id="@+id/eventName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:text="title"
-                    android:textColor="@color/white"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/eventDescription"
-                    android:layout_width="match_parent"
+                <com.borjabravo.readmoretextview.ReadMoreTextView
+                    android:id="@+id/eventDescriptions"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/eventName"
-                    android:layout_marginTop="10dp"
-                    android:text="description"
-                    android:textColor="@color/white"
-                    android:textSize="13sp" />
+                    android:text="@string/dummy_text_is_text_that_is_used_in_the_publishing_industry_or_by_web_designers_to_occupy_the_space_which_will_later_be_filled_with_real_content_the_most_well_known_dummy_text_is_the_lorem_ipsum_which_is_said_to_have_originated_in_the_16th_century_lorem_ipsum_is_composed_in_a_pseudo_latin_language_which_more_or_less_corresponds_to_proper_latin"
+                    android:textColor="#6e6e6e"
+                    android:textColorLink="@color/app_theme"
+                    android:textSize="14sp"
+                    app:showTrimExpandedText="false"
+                    app:trimLength="100" />
 
                 <LinearLayout
-                    android:id="@+id/ratinglayout"
+                    android:id="@+id/directorproducerlayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/eventDescription"
+                    android:layout_below="@+id/eventDescriptions"
                     android:orientation="vertical">
 
                     <LinearLayout
-                        android:id="@+id/starratinglayout"
+                        android:id="@+id/dirprodlayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
+                        android:layout_marginTop="10dp"
                         android:orientation="horizontal">
 
-                        <com.iarcuschin.simpleratingbar.SimpleRatingBar
-                            android:id="@+id/ratingBar"
+                        <customfonts.MyTextView_Roboto_Medium
+                            android:id="@+id/keyname"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:srb_numberOfStars="5"
-                            app:srb_rating="4"
-                            app:srb_starSize="15dp"
-                            app:srb_stepSize="1" />
+                            android:text="@string/director"
+                            android:textAllCaps="false"
+                            android:textColor="@color/grey_700"
+                            android:textSize="14sp" />
 
-                        <TextView
-                            android:id="@+id/ratevalue"
+                        <customfonts.MyTextView_Roboto_Medium
+                            android:id="@+id/keyvalue"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingLeft="15dp"
-                            android:text="4.5"
-                            android:textColor="@color/green"
-                            android:textAllCaps="false"
-                            android:textSize="16sp" />
+                            android:text="@string/sukanta_sinha"
+                            android:textColor="@color/grey_400"
+                            android:textSize="14sp" />
+
                     </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/dirprodlayout1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/keyname1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/producer"
+                            android:textAllCaps="false"
+                            android:textColor="@color/grey_700"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/keyvalue1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="15dp"
+                            android:text="@string/abhijit_and_sushmita_roy_bank"
+                            android:textColor="@color/grey_400"
+                            android:textSize="14sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/dirprodlayout3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal">
+
+                        <customfonts.MyTextView_Roboto_Medium
+                            android:id="@+id/keyname2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/writer"
+                            android:textAllCaps="false"
+                            android:textColor="@color/grey_700"
+                            android:textSize="14sp" />
+
+                        <customfonts.MyTextView_Roboto_Medium
+                            android:id="@+id/keyvalue2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="15dp"
+                            android:text="@string/abcdefghijk_lmnop"
+                            android:textColor="@color/grey_400"
+                            android:textSize="14sp" />
+
+                    </LinearLayout>
+
                 </LinearLayout>
 
-                <Button
-                    android:id="@+id/subscribes"
-                    android:layout_width="100dp"
-                    android:layout_height="35dp"
-                    android:layout_below="@+id/ratinglayout"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/directorproducerlayout"
                     android:layout_marginTop="15dp"
-                    android:background="@drawable/subscribebuttonbg"
-                    android:layout_centerInParent="true"
-                    android:text="@string/subscribe_btn_text"
-                    android:textAllCaps="true"
-                    android:visibility="gone"
-                    android:textColor="@color/white"
-                    android:textSize="13sp" />
+                    android:orientation="vertical">
+
+                    <customfonts.MyTextView_Roboto_Medium
+                        android:id="@+id/heading_text_category_list"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/see_full_cast_and_crew"
+                        android:textColor="@color/grey_700"
+                        android:textSize="14sp" />
+
+                    <customfonts.MyTextView_Roboto_Medium
+                        android:id="@+id/viewline"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_marginTop="6dp"
+                        android:background="@color/grey_700" />
+
+
+                    <customfonts.MyTextView_Roboto_Bold
+                        android:id="@+id/description_text_calender_list"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/related_movies"
+                        android:textColor="@color/appthemecolor"
+                        android:textSize="16sp" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/content_recycler_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:scrollbars="vertical">
+
+                    </android.support.v7.widget.RecyclerView>
+
+
+                </LinearLayout>
+
             </RelativeLayout>
-
-
-
-        </RelativeLayout>
+        </LinearLayout>
     </ScrollView>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:background="#45000000">
+
+        <ImageView
+            android:id="@+id/arrow"
+            android:layout_width="25dp"
+            android:layout_height="20dp"
+            android:layout_alignParentLeft="true"
+            android:layout_margin="12dp"
+            android:src="@drawable/back_" />
+
+        <ImageView
+            android:id="@+id/search"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_margin="12dp"
+            android:src="@drawable/search_icon" />
+
+
+    </RelativeLayout>
 </RelativeLayout>
+
+
+

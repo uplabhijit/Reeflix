@@ -1,0 +1,519 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainlayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".VideoContent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/event_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical">
+
+                <!--<RelativeLayout
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="15dp">
+
+                    <ImageView
+                        android:id="@+id/eventImage"
+                        android:layout_width="200dp"
+                        android:layout_height="100dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/defaulteventimage" />
+
+                    <ProgressBar
+                        android:id="@+id/profile_imageview_progressbar"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:visibility="gone" />
+                </RelativeLayout>-->
+
+                <!--<LinearLayout
+                    android:id="@+id/eventicon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    android:orientation="horizontal">
+
+
+                    <Button
+                        android:id="@+id/publish"
+                        android:layout_width="100dp"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/round_button_createevent"
+                        android:text="Publish"
+                        android:textAllCaps="false" />
+                </LinearLayout>-->
+
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/eventName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="15dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:textColorHint="@color/black"
+                    app:hintTextAppearance="@style/HintText">
+
+                    <EditText
+                        android:id="@+id/videotitleText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-light"
+                        android:hint="@string/videotitle_hinttext"
+                        android:inputType="text"
+                        android:singleLine="true"
+                        android:textColor="@android:color/black"
+                        android:textColorHighlight="@color/appthemecolor"
+                        android:textSize="14sp" />
+                </android.support.design.widget.TextInputLayout>
+<!--
+                <LinearLayout
+                    android:id="@+id/eventCategory"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="15dp">
+
+                    <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                        android:id="@+id/eventCategoryText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-light"
+                        android:hint="@string/videoDescription_hinttext"
+                        android:textAppearance="@style/HintText"
+                        android:textColor="@color/black"
+                        android:textColorHighlight="@color/appthemecolor"
+                        android:textSize="14sp"
+                        app:met_floatingLabel="normal"
+                        app:met_floatingLabelTextColor="@color/black"
+                        app:met_textColorHint="@color/grey_900" />
+                </LinearLayout>-->
+
+<!--
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/startDateDetails"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="3.5dp"
+                        android:layout_weight="5"
+                        android:onClick="selectDate"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/startDate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:fontFamily="sans-serif-light"
+                            android:text="@string/startdatetext_hinttext"
+                            android:textColor="@color/black"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/startdatetext"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="3dp"
+                            android:textSize="14sp" />
+
+                        <View
+                            android:layout_width="wrap_content"
+                            android:layout_height="1dp"
+                            android:layout_marginLeft="3.5dp"
+                            android:layout_marginRight="3.5dp"
+                            android:layout_marginTop="4dp"
+                            android:background="@color/LightGrey" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/startTimeDetails"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="3.5dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="5"
+                        android:onClick="selectTime"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="4dp"
+                            android:fontFamily="sans-serif-light"
+                            android:text="@string/starttime_hinttext"
+                            android:textColor="@color/black"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/starttimetext"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="3dp"
+                            android:textSize="14sp" />
+
+                        <View
+                            android:layout_width="wrap_content"
+                            android:layout_height="1dp"
+                            android:layout_marginLeft="3.5dp"
+                            android:layout_marginRight="3.5dp"
+                            android:layout_marginTop="4dp"
+                            android:background="@color/LightGrey" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/endDateDetails"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="3.5dp"
+                        android:layout_weight="5"
+                        android:onClick="selectDate"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/endDate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:fontFamily="sans-serif-light"
+                            android:text="@string/endDate_hinttext"
+                            android:textColor="@color/black"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/endDateText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="3dp"
+                            android:textSize="14sp" />
+
+                        <View
+                            android:layout_width="wrap_content"
+                            android:layout_height="1dp"
+                            android:layout_marginLeft="3.5dp"
+                            android:layout_marginRight="3.5dp"
+                            android:layout_marginTop="4dp"
+                            android:background="@color/LightGrey" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/endTimeDetails"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="3.5dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="5"
+                        android:onClick="selectTime"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="4dp"
+                            android:fontFamily="sans-serif-light"
+                            android:text="@string/endtime_hinttext"
+                            android:textColor="@color/black"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/endtimetext"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="3dp"
+                            android:textSize="14sp" />
+
+                        <View
+                            android:layout_width="wrap_content"
+                            android:layout_height="1dp"
+                            android:layout_marginLeft="3.5dp"
+                            android:layout_marginRight="3.5dp"
+                            android:layout_marginTop="4dp"
+                            android:background="@color/LightGrey" />
+                    </LinearLayout>
+                </LinearLayout>-->
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/tag"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="15dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:textColorHint="@color/black"
+                    app:hintTextAppearance="@style/HintText">
+
+                    <EditText
+                        android:id="@+id/descriptionText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-light"
+                        android:hint="@string/description_hinttext"
+                        android:inputType="text"
+                        android:singleLine="true"
+                        android:textColor="@android:color/black"
+                        android:textColorHighlight="@color/appthemecolor"
+                        android:textSize="14sp" />
+                </android.support.design.widget.TextInputLayout>
+
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/addNotification"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="15dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:textColorHint="@color/black"
+                    app:hintTextAppearance="@style/HintText">
+
+                    <EditText
+                        android:id="@+id/addDirectorText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-light"
+                        android:hint="@string/director_hinttext"
+                        android:inputType="text"
+                        android:singleLine="true"
+                        android:textColor="@android:color/black"
+                        android:textColorHighlight="@color/appthemecolor"
+                        android:textSize="14sp" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/loaction"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="15dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:textColorHint="@color/black"
+                    app:hintTextAppearance="@style/HintText">
+
+                    <EditText
+                        android:id="@+id/producerText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-light"
+                        android:hint="@string/producertext_hinttext"
+                        android:singleLine="true"
+                        android:textColor="@android:color/black"
+                        android:textColorHighlight="@color/appthemecolor"
+                        android:textSize="14sp" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/addDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="15dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:textColorHint="@color/black"
+                    app:hintTextAppearance="@style/HintText">
+
+                    <EditText
+                        android:id="@+id/castText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-light"
+                        android:hint="@string/cast_hinttext"
+                        android:inputType="text"
+                        android:singleLine="true"
+                        android:textColor="@android:color/black"
+                        android:textColorHighlight="@color/appthemecolor"
+                        android:textSize="14sp" />
+                </android.support.design.widget.TextInputLayout>
+<!--
+                <LinearLayout
+                    android:id="@+id/privacy"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="15dp">
+
+                    <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                        android:id="@+id/privacy_spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-light"
+                        android:hint="@string/privacy_hintText"
+                        android:textAppearance="@style/HintText"
+                        android:textColor="@color/black"
+                        android:textColorHighlight="@color/appthemecolor"
+                        android:textSize="14sp"
+                        app:met_floatingLabel="normal"
+                        app:met_floatingLabelTextColor="@color/black"
+                        app:met_textColorHint="@color/grey_900" />
+                </LinearLayout>-->
+
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="15dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:textColorHint="@color/black"
+                    app:hintTextAppearance="@style/HintText">
+
+                    <EditText
+                        android:id="@+id/maturityText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-light"
+                        android:hint="@string/maturity_hinttext"
+                        android:inputType="text"
+                        android:singleLine="true"
+                        android:textColor="@android:color/black"
+                        android:textColorHighlight="@color/appthemecolor"
+                        android:textSize="14sp" />
+                </android.support.design.widget.TextInputLayout>
+
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/genre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="15dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:textColorHint="@color/black"
+                    app:hintTextAppearance="@style/HintText">
+
+                    <EditText
+                        android:id="@+id/genreText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-light"
+                        android:hint="@string/genre_hinttext"
+                        android:inputType="text"
+                        android:singleLine="true"
+                        android:textColor="@android:color/black"
+                        android:textColorHighlight="@color/appthemecolor"
+                        android:textSize="14sp" />
+                </android.support.design.widget.TextInputLayout>
+
+
+                <!--    <android.support.v7.widget.SwitchCompat
+                        android:id="@+id/visibilityButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_gravity="left"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginTop="15dp"
+                        android:checked="false"
+                        android:fontFamily="sans-serif-light"
+                        android:text="@string/visibility_text"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:visibility="gone" />
+
+                    <LinearLayout
+                        android:id="@+id/Type"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="15dp"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/eventType"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="45dp"
+                            android:textColor="@color/black"
+                            android:textSize="20sp" />
+                    </LinearLayout>-->
+
+
+
+                <Button
+                    android:id="@+id/btn_savecontent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_below="@+id/event_layout"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/subscribebuttonbg"
+                    android:elevation="20dp"
+                    android:fontFamily="sans-serif-light"
+                    android:imeOptions="actionDone"
+                    android:paddingLeft="30dp"
+                    android:paddingRight="30dp"
+                    android:shadowColor="@color/blue_300"
+                    android:text="@string/nextButtontext"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </RelativeLayout>
+
+
+    </ScrollView>
+
+
+</RelativeLayout>

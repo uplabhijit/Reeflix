@@ -2,8 +2,7 @@ package com.underscoretec.reeflix.models;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-public class Video implements Serializable
-{
+public class Video implements Serializable {
     String id;
     String title;
     String description;
@@ -14,20 +13,20 @@ public class Video implements Serializable
     String thumbnail2;
     String type;
 
-    ArrayList<Cast> casts =  new ArrayList<>();
-    ArrayList<Director> directors =  new ArrayList<>();
-    ArrayList<Producer> producers =  new ArrayList<>();
-    ArrayList<Category> categories =  new ArrayList<>();
-    ArrayList<Genre> genres =  new ArrayList<>();
+    ArrayList<Cast> casts = new ArrayList<>();
+    ArrayList<Director> directors = new ArrayList<>();
+    ArrayList<Producer> producers = new ArrayList<>();
+    ArrayList<Category> categories = new ArrayList<>();
+    ArrayList<Genre> genres = new ArrayList<>();
 
-
-    public Video(String title, String description,String thumbnail1,String sources, String id )
-    {
+    public Video(String title, String description, String thumbnail1, String thumbnail2, String maturity, String sources, String id) {
         this.id = id;
         this.title = title;
         this.description = description;
-        this.thumbnail1 =thumbnail1;
+        this.thumbnail1 = thumbnail1;
+        this.thumbnail2 = thumbnail2;
         this.sources = sources;
+        this.maturity = maturity;
     }
 
     public Video(String id, String title, String description, String cast, String maturity,
