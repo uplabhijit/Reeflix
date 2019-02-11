@@ -3,6 +3,7 @@ package com.underscoretec.reeflix.fragment;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,15 +14,19 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -31,6 +36,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.underscoretec.reeflix.Constant.ApiConstant;
+import com.underscoretec.reeflix.Login;
 import com.underscoretec.reeflix.R;
 import com.underscoretec.reeflix.RequestQueueSingleton;
 import com.underscoretec.reeflix.SingleUploadBroadcastReceiver;
@@ -45,8 +51,10 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
+import customfonts.MyTextView_Roboto_Medium;
 import de.hdodenhof.circleimageview.CircleImageView;
 import in.mayanknagwanshi.imagepicker.imageCompression.ImageCompressionListener;
 import in.mayanknagwanshi.imagepicker.imagePicker.ImagePicker;
@@ -56,19 +64,21 @@ public class ProfileFragment extends Fragment implements SingleUploadBroadcastRe
 
     public Button btn_update;
     CircleImageView editImage, personimage;
-    public EditText input_name, input_email, input_phonenumber, input_address, input_zipcode;
+    public EditText input_email, input_phonenumber, input_address, input_zipcode;
     public ProgressDialog progress;
+    private ProgressBar progressBar;
     private RequestQueue requestQueue;
     static final String REQ_TAG = " PROFILEUPDATEACTIVITY";
     ImagePicker imagePicker;
     private SingleUploadBroadcastReceiver uploadReceiver;
     public String uploadId;
+    public TextView input_name;
     private String filePath;
     private Bitmap selectedImage;
     private ProgressBar profileImageProgress;
     private String[] galleryPermissions = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
     private JSONObject serverResp;
-
+    private View view;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -89,10 +99,10 @@ public class ProfileFragment extends Fragment implements SingleUploadBroadcastRe
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.findItem(R.id.action_searches).setVisible(false);
         inflater.inflate(R.menu.profile_popup, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
-
 
     /*To work on item selected*/
     @Override
@@ -106,9 +116,55 @@ public class ProfileFragment extends Fragment implements SingleUploadBroadcastRe
                 input_address.setEnabled(true);
                 input_zipcode.setEnabled(true);
                 setHasOptionsMenu(false);
+                return true;
+            case R.id.action_logout:
+                final Dialog dialog = new Dialog(getContext());
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.custom_dialog);
+                dialog.show();
+                MyTextView_Roboto_Medium acceptButton = (MyTextView_Roboto_Medium) dialog.findViewById(R.id.btn_yes);
+                // if yes  button is clicked, open the custom dialog
+                acceptButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        SharedPreferences pref = getActivity().getSharedPreferences("MyPref", 0);
+                        SharedPreferences.Editor editor = pref.edit();
+                        editor.putString("store", "");
+                        editor.putBoolean("loginStatus", false);
+                        editor.commit();
+                        Intent intent = new Intent(getActivity(), Login.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                        getActivity().finish();
+                    }
+                });
+                MyTextView_Roboto_Medium rejectButton = (MyTextView_Roboto_Medium) dialog.findViewById(R.id.btn_no);
+                // if yes  button is clicked, close the custom dialog
+                rejectButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // Close dialog
+                        dialog.dismiss();
+                    }
+                });
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onResume() {
+        System.out.println("on Resume");
+        super.onResume();
+        uploadReceiver.register(getContext());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        System.out.println("on pause");
+        uploadReceiver.unregister(getContext());
     }
 
     @SuppressLint("CutPasteId")
@@ -116,8 +172,13 @@ public class ProfileFragment extends Fragment implements SingleUploadBroadcastRe
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        view = inflater.inflate(R.layout.fragment_profile, container, false);
+        //To init ui element
+        initUiElement();
+        return view;
+    }
 
+    private void initUiElement() {
         btn_update = view.findViewById(R.id.btn_update);
         editImage = view.findViewById(R.id.editimage);
         personimage = view.findViewById(R.id.personimage);
@@ -125,39 +186,42 @@ public class ProfileFragment extends Fragment implements SingleUploadBroadcastRe
         input_phonenumber = view.findViewById(R.id.input_phonenumber);
         input_email = view.findViewById(R.id.input_email);
         input_address = view.findViewById(R.id.input_address);
-        input_zipcode = view.findViewById(R.id.input_zipcode);
-        profileImageProgress = view.findViewById(R.id.profile_imageview_progressbar);
-
+        input_zipcode = view.findViewById(R.id.input_zipcode);//keyboard Listener
+        profileImageProgress = view.findViewById(R.id.pro_imageview_progressbar);
+        progressBar = view.findViewById(R.id.progressBar);
         //add listener to update button
         btn_update.setOnClickListener(v -> {
-
             //function call to update profile
             updateProfile();
         });
         //add listener to update profile image
         editImage.setOnClickListener(v -> {
-
             //function call update profile image
             updateProfileImage();
         });
+        input_zipcode.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    System.out.println("trace for update profile");
+                    updateProfile();
+                    return true;
+                }
+                return false;
+            }
+        });
         //To get profile data
         getProfileData();
-
         //To initialize image picker
         imagePicker = new ImagePicker();
-
         //To initialize receiver
         uploadReceiver = new SingleUploadBroadcastReceiver();
-
         //To get request queue
         requestQueue = RequestQueueSingleton.getInstance(getActivity()).getRequestQueue();
-
-        return view;
     }
 
     //function call to get profile data
     private void getProfileData() {
-
         SharedPreferences pref = getContext().getSharedPreferences("MyPref", 0);
         try {
             serverResp = new JSONObject(pref.getString("store", ""));
@@ -180,10 +244,11 @@ public class ProfileFragment extends Fragment implements SingleUploadBroadcastRe
             if (serverResp.getJSONObject("result").has("imageId")) {
                 Boolean value = !serverResp.getJSONObject("result").getString("imageId").equals("");
                 if (value) {
-                    progress = new ProgressDialog(getContext());
+                   /* progress = new ProgressDialog(getContext());
                     progress.setMessage("Loading...");
                     progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
-                    progress.show();
+                    progress.show();*/
+                    profileImageProgress.setVisibility(View.VISIBLE);
                     String getImageUrl = ApiConstant.getimage_url + serverResp.getJSONObject("result").getString("imageId");
                     Glide.with(this)
                             .asBitmap()
@@ -192,13 +257,13 @@ public class ProfileFragment extends Fragment implements SingleUploadBroadcastRe
                                 @Override
                                 public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                                     personimage.setImageBitmap(resource);
-                                    progress.dismiss();
+                                    profileImageProgress.setVisibility(View.GONE);
                                 }
 
                                 @Override
                                 public void onLoadFailed(@Nullable Drawable errorDrawable) {
                                     super.onLoadFailed(errorDrawable);
-                                    progress.dismiss();
+                                    profileImageProgress.setVisibility(View.GONE);
                                     Toast.makeText(getActivity(), "Image load fails", Toast.LENGTH_SHORT).show();
                                 }
                             });
@@ -221,18 +286,17 @@ public class ProfileFragment extends Fragment implements SingleUploadBroadcastRe
 
     //function call to update profile
     private void updateProfile() {
-
         //To check internet connection
         if (SDUtility.isNetworkAvailable(getContext())) {
             try {
 
                 /*To check internet is connected or not*/
                 if (SDUtility.isConnected()) {
-                    progress = new ProgressDialog(getContext());
-                    progress.setMessage(getString(R.string.pleasewait_text));
-                    progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
-                    progress.show();
-
+                 /*   progress = new ProgressDialog (getContext ());
+                    progress.setMessage (getString (R.string.pleasewait_text));
+                    progress.setCancelable (false); // disable dismiss by tapping outside of the dialog
+                    progress.show ();*/
+                    progressBar.setVisibility(View.VISIBLE);
                     JSONObject profilejson = new JSONObject();
                     try {
                         profilejson.put("name", input_name.getText().toString());
@@ -245,12 +309,12 @@ public class ProfileFragment extends Fragment implements SingleUploadBroadcastRe
                         e.printStackTrace();
                         SDUtility.displayExceptionMessage(e.getMessage(), getActivity());
                     }
-
                     //To get url for create event
                     String url = ApiConstant.api_updateuser_url + serverResp.getJSONObject("result").getString("_id");
                     JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, url, profilejson,
                             response -> {
-                                progress.dismiss();
+                                /* progress.dismiss ();*/
+                                progressBar.setVisibility(View.GONE);
                                 try {
                                     JSONObject serverResp = new JSONObject(response.toString());
                                     System.out.println("success result: " + serverResp);
@@ -264,10 +328,8 @@ public class ProfileFragment extends Fragment implements SingleUploadBroadcastRe
                                         SharedPreferences.Editor editor = pref.edit();
                                         editor.putString("store", response.toString());
                                         editor.commit();
-
                                         //To get updated profile data
                                         getProfileData();
-
                                         btn_update.setVisibility(View.INVISIBLE);
                                         editImage.setVisibility(View.INVISIBLE);
                                         setHasOptionsMenu(true);
@@ -275,11 +337,13 @@ public class ProfileFragment extends Fragment implements SingleUploadBroadcastRe
                                     }
                                 } catch (JSONException e) {
                                     // TODO Auto-generated catch block
-                                    progress.dismiss();
+                                    /*progress.dismiss ();*/
+                                    progressBar.setVisibility(View.GONE);
                                     e.printStackTrace();
                                 }
                             }, error -> {
-                        progress.dismiss();
+                        /*progress.dismiss ();*/
+                        progressBar.setVisibility(View.GONE);
                         System.out.println("Error getting response");
                         SDUtility.displayExceptionMessage(error.getMessage(), getActivity());
                     }) {    //this is the part, that adds the header to the request
@@ -330,6 +394,7 @@ public class ProfileFragment extends Fragment implements SingleUploadBroadcastRe
                     //convert to bitmap easily
                     Bitmap selectedImage = BitmapFactory.decodeFile(filePath);
                     //To set person image
+                    selectedImage = BitmapFactory.decodeFile(filePath);
                     personimage.setImageBitmap(selectedImage);
                 }
             });
@@ -350,14 +415,14 @@ public class ProfileFragment extends Fragment implements SingleUploadBroadcastRe
     //To upload multi part image
     private void uploadMultipart(String filePath) {
         //Uploading code
+        System.out.println(" bhhnfnjjnfv");
         try {
             String uploadId = UUID.randomUUID().toString();
             String uploadUrl = ApiConstant.api_imageupload_url;
             uploadReceiver.setDelegate(this);
             uploadReceiver.setUploadID(uploadId);
-
             //Creating a multi part request
-            new MultipartUploadRequest(getActivity(), uploadId, uploadUrl)
+            new MultipartUploadRequest(getContext(), uploadId, uploadUrl)
                     .addHeader("Content-Type", "multipart/form-data")
                     .addHeader("key", "c815a866efbe9cebfb842062cc85e46f")
                     .addFileToUpload(filePath, "file") //Adding file
@@ -366,7 +431,6 @@ public class ProfileFragment extends Fragment implements SingleUploadBroadcastRe
                     .setMaxRetries(2)
                     .startUpload(); //Starting the upload
         } catch (Exception exc) {
-
             Toast.makeText(getContext(), exc.getMessage(), Toast.LENGTH_SHORT).show();
             profileImageProgress.setVisibility(View.GONE);
         }
@@ -376,9 +440,7 @@ public class ProfileFragment extends Fragment implements SingleUploadBroadcastRe
     @Override
     public void onProgress(int progr) {
         System.out.println("PROGRESS progress = " + progr);
-        progress = new ProgressDialog(getContext());
         profileImageProgress.setVisibility(View.VISIBLE);
-        progress.setProgress(progr);
     }
 
     /*On progress status*/
@@ -401,7 +463,6 @@ public class ProfileFragment extends Fragment implements SingleUploadBroadcastRe
     @Override
     public void onCompleted(int serverResponseCode, byte[] serverResponseBody) {
         System.out.println("on completed");
-        progress.dismiss();
         String str = new String(serverResponseBody);
         System.out.println(str);
         try {

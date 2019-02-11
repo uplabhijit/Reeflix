@@ -9,12 +9,15 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +46,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     private Button btnSkip, btnNext;
     public EditText emailText, otpText, newpassword, confirm_password;
     private ProgressDialog progress;
+    public ProgressBar progressBar;
     RequestQueue requestQueue;
     public Button btn_verifyEmail, btn_verifyOtp, btn_resetPassword;
     static final String REQ_TAG = "VERIFYEMAILACTIVITY";
@@ -142,6 +146,19 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 newpassword = views.findViewById(R.id.newpassword);
                 confirm_password = views.findViewById(R.id.confirm_password);
                 btn_resetPassword = views.findViewById(R.id.btn_resetPassword);
+                progressBar = views.findViewById(R.id.progressBar);
+                //keyboard listener
+                confirm_password.setOnEditorActionListener(new EditText.OnEditorActionListener() {
+                    @Override
+                    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                        if (actionId == EditorInfo.IME_ACTION_DONE) {
+                            System.out.println("trace for resetpassword");
+                            resetPassword(null);
+                            return true;
+                        }
+                        return false;
+                    }
+                });
                 btn_resetPassword.setOnClickListener(view -> {
                     //function call to reset password
                     resetPassword(null);
@@ -155,7 +172,20 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 btnNext.setVisibility(View.GONE);
                 btnSkip.setVisibility(View.VISIBLE);
                 otpText = views.findViewById(R.id.otpText);
+                //keyboard listener
+                otpText.setOnEditorActionListener(new EditText.OnEditorActionListener() {
+                    @Override
+                    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                        if (actionId == EditorInfo.IME_ACTION_DONE) {
+                            System.out.println("trace for verify otp");
+                            verifyOtp(null);
+                            return true;
+                        }
+                        return false;
+                    }
+                });
                 btn_verifyOtp = views.findViewById(R.id.btn_verifyOtp);
+                progressBar = views.findViewById(R.id.progressBar);
                 btn_verifyOtp.setOnClickListener(view -> {
                     //function call to verify otp
                     verifyOtp(null);
@@ -198,6 +228,19 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 btnSkip.setVisibility(View.GONE);
                 btnNext.setVisibility(View.GONE);
                 emailText = views.findViewById(R.id.emailText);
+                progressBar = views.findViewById(R.id.progressBar);
+                //keyboard listener
+                emailText.setOnEditorActionListener(new EditText.OnEditorActionListener() {
+                    @Override
+                    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                        if (actionId == EditorInfo.IME_ACTION_DONE) {
+                            System.out.println("trace for verify phone");
+                            verifyEmail(null);
+                            return true;
+                        }
+                        return false;
+                    }
+                });
                 btn_verifyEmail = views.findViewById(R.id.btn_verifyEmail);
                 btn_verifyEmail.setOnClickListener(view -> {
                     //Function call to verify email
@@ -231,11 +274,12 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             try {
                 if (SDUtility.isConnected()) {
                     if (SDUtility.isValidphoneNumber(emailText.getText().toString())) {
-                        progress = new ProgressDialog(this);
+                        /*progress = new ProgressDialog(this);
                         //TODO: replace with string
                         progress.setMessage(getResources().getString(R.string.verify_email_loader));
                         progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
-                        progress.show();
+                        progress.show();*/
+                        progressBar.setVisibility(View.VISIBLE);
                         JSONObject json = new JSONObject();
                         try {
                             json.put("phoneNumber", emailText.getText().toString());
@@ -247,7 +291,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                         String url = ApiConstant.api_verifyemail_url;
                         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, url, json,
                                 response -> {
-                                    progress.dismiss();
+                                    /* progress.dismiss();*/
+                                    progressBar.setVisibility(View.GONE);
                                     System.out.println(response.toString());
                                     try {
                                         JSONObject serverResp = new JSONObject(response.toString());
@@ -262,13 +307,13 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                                         }
                                     } catch (JSONException e) {
                                         // TODO Auto-generated catch block
-                                        progress.dismiss();
                                         e.printStackTrace();
                                         System.out.println("Error getting response || Error msg:-" + e.getMessage());
                                         SDUtility.displayExceptionMessage(e.getMessage(), ForgotPasswordActivity.this);
                                     }
                                 }, error -> {
-                            progress.dismiss();
+                            /*progress.dismiss();*/
+                            progressBar.setVisibility(View.GONE);
                             System.out.println("Error getting response");
                             System.out.println("Error getting response || Error msg:-" + error.getMessage());
                             SDUtility.displayExceptionMessage(error.getMessage(), ForgotPasswordActivity.this);
@@ -301,11 +346,12 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             try {
                 if (SDUtility.isConnected()) {
                     if (otpText.getText().toString().length() > 0) {
-                        progress = new ProgressDialog(this);
+                        /*progress = new ProgressDialog(this);
                         //TODO: replace with string
                         progress.setMessage(getResources().getString(R.string.verify_otp_loader));
                         progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
-                        progress.show();
+                        progress.show();*/
+                        progressBar.setVisibility(View.VISIBLE);
                         JSONObject json = new JSONObject();
                         try {
                             json.put("phoneNumber", emailText.getText().toString());
@@ -317,7 +363,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                         String url = ApiConstant.api_verifyotp_url;
                         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, url, json,
                                 response -> {
-                                    progress.dismiss();
+                                    /* progress.dismiss();*/
+                                    progressBar.setVisibility(View.GONE);
                                     System.out.println(response.toString());
                                     try {
                                         JSONObject serverResp = new JSONObject(response.toString());
@@ -332,13 +379,13 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                                         }
                                     } catch (JSONException e) {
                                         // TODO Auto-generated catch block
-                                        progress.dismiss();
+                                        /* progress.dismiss();*/
                                         e.printStackTrace();
                                         System.out.println("Error getting response || Error msg:-" + e.getMessage());
                                         SDUtility.displayExceptionMessage(e.getMessage(), ForgotPasswordActivity.this);
                                     }
                                 }, error -> {
-                            progress.dismiss();
+                            progressBar.setVisibility(View.GONE);
                             System.out.println("Error getting response");
                             System.out.println("Error getting response || Error msg:-" + error.getMessage());
                             SDUtility.displayExceptionMessage(error.getMessage(), ForgotPasswordActivity.this);
@@ -373,11 +420,12 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 if (SDUtility.isConnected()) {
                     if (SDUtility.isValidPassword(newpassword.getText().toString()) && SDUtility.isValidPassword(confirm_password.getText().toString())) {
                         if (newpassword.getText().toString().equals(confirm_password.getText().toString())) {
-                            progress = new ProgressDialog(this);
+                            /*progress = new ProgressDialog(this);
                             //TODO: replace with string
                             progress.setMessage(getResources().getString(R.string.reset_password_loader));
                             progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
-                            progress.show();
+                            progress.show();*/
+                            progressBar.setVisibility(View.VISIBLE);
                             JSONObject json = new JSONObject();
                             try {
                                 json.put("phoneNumber", emailText.getText().toString());
@@ -390,7 +438,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                             String url = ApiConstant.api_resetpassword_url;
                             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, url, json,
                                     response -> {
-                                        progress.dismiss();
+                                        progressBar.setVisibility(View.GONE);
                                         System.out.println(response.toString());
                                         try {
                                             JSONObject serverResp = new JSONObject(response.toString());
@@ -404,13 +452,12 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                                             }
                                         } catch (JSONException e) {
                                             // TODO Auto-generated catch block
-                                            progress.dismiss();
                                             e.printStackTrace();
                                             System.out.println("Error getting response || Error msg:-" + e.getMessage());
                                             SDUtility.displayExceptionMessage(e.getMessage(), ForgotPasswordActivity.this);
                                         }
                                     }, error -> {
-                                progress.dismiss();
+                                progressBar.setVisibility(View.GONE);
                                 System.out.println("Error getting response");
                                 System.out.println("Error getting response || Error msg:-" + error.getMessage());
                                 SDUtility.displayExceptionMessage(error.getMessage(), ForgotPasswordActivity.this);

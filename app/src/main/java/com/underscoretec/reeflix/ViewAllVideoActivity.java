@@ -18,17 +18,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.underscoretec.reeflix.Constant.ApiConstant;
-import com.underscoretec.reeflix.app.MyApplication;
 import com.underscoretec.reeflix.models.Video;
 import com.underscoretec.reeflix.utility.SDUtility;
 
@@ -36,6 +36,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -48,15 +49,20 @@ public class ViewAllVideoActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private List<Video> movieList;
     private StoreAdapter mAdapter;
+    private ProgressBar progressBar;
     private ShimmerFrameLayout mShimmerViewContainer;
     public String categoryId;
+    static final String REQ_TAG = "VIEWALLVIDEOACTIVITY";
+    private RequestQueue requestQueue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_all_video);
+        requestQueue = RequestQueueSingleton.getInstance(this.getApplicationContext()).getRequestQueue();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mShimmerViewContainer = findViewById(R.id.shimmer_view_container);
+        progressBar = findViewById(R.id.progressBar);
         recyclerView = findViewById(R.id.recycler_view);
         movieList = new ArrayList<>();
         mAdapter = new StoreAdapter(ViewAllVideoActivity.this, movieList);
@@ -86,70 +92,91 @@ public class ViewAllVideoActivity extends AppCompatActivity {
 
     /*function call to show view all video list*/
     private void fetchStoreItems() {
-        String URL = ApiConstant.video_view_all_api + categoryId;
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, URL, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        JSONArray jsonArray = null;
-                        if (response == null) {
-                            Toast.makeText(ViewAllVideoActivity.this, "Couldn't fetch the store items! Pleas try again.", Toast.LENGTH_LONG).show();
-                            return;
+        if (SDUtility.isNetworkAvailable(ViewAllVideoActivity.this)) {
+            try {
+                if (SDUtility.isConnected()) {
+                    progressBar.setVisibility(View.VISIBLE);
+                    String URL = ApiConstant.video_view_all_api + categoryId;
+                    JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, URL, null,
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    progressBar.setVisibility(View.GONE);
+                                    JSONArray jsonArray = null;
+                                    if (response == null) {
+                                        Toast.makeText(ViewAllVideoActivity.this, "Couldn't fetch the store items! Pleas try again.", Toast.LENGTH_LONG).show();
+                                        return;
+                                    }
+                                    try {
+                                        jsonArray = response.getJSONArray("result").getJSONObject(0).getJSONArray("content");
+                                        String thumbnail1 = null;
+                                        String thumbnail2 = null;
+                                        String sources = null;
+                                        for (int i = 0; i < jsonArray.length(); i++) {
+                                            JSONObject contentObject = jsonArray.getJSONObject(i);
+                                            if (contentObject.has("thumbnail1")) {
+                                                thumbnail1 = contentObject.getString("thumbnail1");
+                                            }
+                                            if (contentObject.has("thumbnail2")) {
+                                                thumbnail2 = contentObject.getString("thumbnail1");
+                                            }
+                                            if (contentObject.has("sources")) {
+                                                sources = contentObject.getJSONObject("sources").getString("hls");
+                                            }
+                                            Video video = new Video(
+                                                    contentObject.getString("title"),
+                                                    contentObject.getString("description"),
+                                                    thumbnail1,
+                                                    thumbnail2,
+                                                    contentObject.getString("maturity"),
+                                                    sources,
+                                                    contentObject.getString("_id")
+                                            );
+                                            movieList.add(video);
+                                        }
+                                        mAdapter = new StoreAdapter(ViewAllVideoActivity.this, movieList);
+                                        recyclerView.setAdapter(mAdapter);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        progressBar.setVisibility(View.GONE);
+                                        SDUtility.displayExceptionMessage(e.getMessage(), ViewAllVideoActivity.this);
+                                    }
+                                    // stop animating Shimmer and hide the layout
+                                    mShimmerViewContainer.stopShimmerAnimation();
+                                    mShimmerViewContainer.setVisibility(View.GONE);
+                                }
+                            }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            // error in getting json
+                            Log.e(String.valueOf(ViewAllVideoActivity.this), "Error: " + error.getMessage());
+                            progressBar.setVisibility(View.GONE);
+                            Toast.makeText(ViewAllVideoActivity.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
                         }
-                        try {
-                            jsonArray = response.getJSONArray("result").getJSONObject(0).getJSONArray("content");
-                            String thumbnail1 = null;
-                            String thumbnail2 = null;
-                            String sources = null;
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject contentObject = jsonArray.getJSONObject(i);
-                                if (contentObject.has("thumbnail1")) {
-                                    thumbnail1 = contentObject.getString("thumbnail1");
-                                }
-                                if (contentObject.has("thumbnail2")) {
-                                    thumbnail2 = contentObject.getString("thumbnail1");
-                                }
-                                if (contentObject.has("sources")) {
-                                    sources = contentObject.getJSONObject("sources").getString("hls");
-                                }
-                                Video video = new Video(
-                                        contentObject.getString("title"),
-                                        contentObject.getString("description"),
-                                        thumbnail1,
-                                        thumbnail2,
-                                        contentObject.getString("maturity"),
-                                        sources,
-                                        contentObject.getString("_id")
-                                );
-                                movieList.add(video);
-                            }
-                            mAdapter = new StoreAdapter(ViewAllVideoActivity.this, movieList);
-                            recyclerView.setAdapter(mAdapter);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            SDUtility.displayExceptionMessage(e.getMessage(), ViewAllVideoActivity.this);
+                    }) {    //this is the part, that adds the header to the request
+                        @Override
+                        public Map<String, String> getHeaders() {
+                            Map<String, String> params = new HashMap<>();
+                            params.put("key", "c815a866efbe9cebfb842062cc85e46f");
+                            params.put("content-type", "application/json");
+                            return params;
                         }
-                        // stop animating Shimmer and hide the layout
-                        mShimmerViewContainer.stopShimmerAnimation();
-                        mShimmerViewContainer.setVisibility(View.GONE);
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                // error in getting json
-                Log.e(String.valueOf(ViewAllVideoActivity.this), "Error: " + error.getMessage());
-                Toast.makeText(ViewAllVideoActivity.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                    };
+                    /*  MyApplication.getInstance().addToRequestQueue(request);*/
+                    request.setTag(REQ_TAG);
+                    requestQueue.add(request);
+                } else {
+                    Toast.makeText(ViewAllVideoActivity.this, "Error: " + "in network connection", Toast.LENGTH_SHORT).show();
+                }
+            } catch (InterruptedException | IOException e) {
+                e.printStackTrace();
+                //To display exception message
+                SDUtility.displayExceptionMessage(e.getMessage(), ViewAllVideoActivity.this);
+                System.out.println("hhjjkj" + e.getMessage());
             }
-        }) {    //this is the part, that adds the header to the request
-            @Override
-            public Map<String, String> getHeaders() {
-                Map<String, String> params = new HashMap<>();
-                params.put("key", "c815a866efbe9cebfb842062cc85e46f");
-                params.put("content-type", "application/json");
-                return params;
-            }
-        };
-        MyApplication.getInstance().addToRequestQueue(request);
+        } else {
+            Toast.makeText(ViewAllVideoActivity.this, "Error: " + "in network connection", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
@@ -167,10 +194,10 @@ public class ViewAllVideoActivity extends AppCompatActivity {
         @Override
         public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
             int position = parent.getChildAdapterPosition(view); // item position
-            System.out.println("span count>>>>>"+spanCount);
+            System.out.println("span count>>>>>" + spanCount);
             int column = position % spanCount; // item column
-            System.out.println("position>>>>>>>>>>>>>"+position);
-            System.out.println("column>>>>>>>>>>>>"+column);
+            System.out.println("position>>>>>>>>>>>>>" + position);
+            System.out.println("column>>>>>>>>>>>>" + column);
             if (includeEdge) {
                 outRect.left = spacing - column * spacing / spanCount; // spacing - column * ((1f / spanCount) * spacing)
                 outRect.right = (column + 1) * spacing / spanCount; // (column + 1) * ((1f / spanCount) * spacing)

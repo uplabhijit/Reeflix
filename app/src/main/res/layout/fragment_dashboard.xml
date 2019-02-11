@@ -1,300 +1,319 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:shimmer="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black">
 
 
-    <LinearLayout
-        android:id="@+id/typeLayout"
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_centerInParent="true"
+        android:clickable="false"
+        android:progressDrawable="@drawable/circular_progress_bar"
+        android:visibility="gone" />
+
+
+    <android.support.v4.widget.NestedScrollView xmlns:shimmer="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:visibility="gone">
+        android:layout_height="match_parent">
 
-        <ss.com.bannerslider.Slider
-            android:id="@+id/banner_slider1"
+
+        <LinearLayout
+            android:id="@+id/typeLayout"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            app:slider_animateIndicators="true"
-            app:slider_emptyView="@layout/layout_empty_view"
-            app:slider_indicatorSize="10dp"
-            app:slider_interval="5000"
-            app:slider_loopSlides="true"
-            app:slider_selectedSlideIndicator="@drawable/indicator_circle_selected"
-            app:slider_unselectedSlideIndicator="@drawable/indicator_circle_unselected" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/category_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        </android.support.v7.widget.RecyclerView>
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone">
 
 
-        <!-- <android.support.v7.widget.CardView
-             android:id="@+id/calendarCard"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:layout_marginLeft="5dp"
-             android:layout_marginRight="5dp"
-             android:layout_marginTop="10dp"
-             android:background="@color/Black">
+            <ss.com.bannerslider.Slider
+                android:id="@+id/banner_slider1"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                app:slider_animateIndicators="true"
+                app:slider_emptyView="@layout/layout_empty_view"
+                app:slider_indicatorSize="10dp"
+                app:slider_interval="5000"
+                app:slider_loopSlides="true"
+                app:slider_selectedSlideIndicator="@drawable/indicator_circle_selected"
+                app:slider_unselectedSlideIndicator="@drawable/indicator_circle_unselected" />
 
-             <RelativeLayout
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/category_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </android.support.v7.widget.RecyclerView>
+
+
+            <!-- <android.support.v7.widget.CardView
+                 android:id="@+id/calendarCard"
                  android:layout_width="match_parent"
                  android:layout_height="wrap_content"
+                 android:layout_marginLeft="5dp"
+                 android:layout_marginRight="5dp"
+                 android:layout_marginTop="10dp"
                  android:background="@color/Black">
 
-                 <TextView
-                     android:id="@+id/heading_text_calender_list"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:layout_marginLeft="10dp"
-                     android:layout_marginTop="10dp"
-                     android:text="Recommended"
-                     android:textColor="@color/app_theme"
-                     android:textSize="16sp"
-                     android:textStyle="bold" />
-
-                 <TextView
-                     android:id="@+id/description_text_calender_list"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:layout_below="@+id/heading_text_calender_list"
-                     android:layout_marginLeft="10dp"
-                     android:text="Created by company and others user"
-                     android:textColor="#6e6e6e"
-                     android:textSize="13sp" />
-
                  <RelativeLayout
-                     android:id="@+id/view_more_button_calendar_layout"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:layout_alignParentRight="true"
-                     android:layout_marginRight="10dp"
-                     android:layout_marginTop="10dp"
-                     android:background="@drawable/ripple_effect">
-
-                     <Button
-                         android:id="@+id/view_more_video"
-                         android:layout_width="65dp"
-                         android:layout_height="22dp"
-                         android:background="@drawable/subscribebuttonbg"
-                         android:text="VIEW ALL"
-                         android:textColor="@color/pure_white"
-                         android:textSize="11sp"/>
-                 </RelativeLayout>
-
-                 &lt;!&ndash;<com.facebook.shimmer.ShimmerFrameLayout
-                     android:id="@+id/shimmer_view_container"
                      android:layout_width="match_parent"
                      android:layout_height="wrap_content"
-                     android:layout_below="@+id/description_text_calender_list"
-                     android:layout_margin="10dp"
-                     android:orientation="vertical"
-                     android:layout_gravity="center"
-                     shimmer:duration="1000">
+                     android:background="@color/Black">
 
-                     &lt;!&ndash; Adding 3 rows of placeholders &ndash;&gt;
-                     <LinearLayout
+                     <TextView
+                         android:id="@+id/heading_text_calender_list"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_marginLeft="10dp"
+                         android:layout_marginTop="10dp"
+                         android:text="Recommended"
+                         android:textColor="@color/app_theme"
+                         android:textSize="16sp"
+                         android:textStyle="bold" />
+
+                     <TextView
+                         android:id="@+id/description_text_calender_list"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_below="@+id/heading_text_calender_list"
+                         android:layout_marginLeft="10dp"
+                         android:text="Created by company and others user"
+                         android:textColor="#6e6e6e"
+                         android:textSize="13sp" />
+
+                     <RelativeLayout
+                         android:id="@+id/view_more_button_calendar_layout"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_alignParentRight="true"
+                         android:layout_marginRight="10dp"
+                         android:layout_marginTop="10dp"
+                         android:background="@drawable/ripple_effect">
+
+                         <Button
+                             android:id="@+id/view_more_video"
+                             android:layout_width="65dp"
+                             android:layout_height="22dp"
+                             android:background="@drawable/subscribebuttonbg"
+                             android:text="VIEW ALL"
+                             android:textColor="@color/pure_white"
+                             android:textSize="11sp"/>
+                     </RelativeLayout>
+
+                     &lt;!&ndash;<com.facebook.shimmer.ShimmerFrameLayout
+                         android:id="@+id/shimmer_view_container"
                          android:layout_width="match_parent"
                          android:layout_height="wrap_content"
-                         android:orientation="horizontal">
+                         android:layout_below="@+id/description_text_calender_list"
+                         android:layout_margin="10dp"
+                         android:orientation="vertical"
+                         android:layout_gravity="center"
+                         shimmer:duration="1000">
 
-                         <include layout="@layout/layout_placeholder_dashboard" />
+                         &lt;!&ndash; Adding 3 rows of placeholders &ndash;&gt;
+                         <LinearLayout
+                             android:layout_width="match_parent"
+                             android:layout_height="wrap_content"
+                             android:orientation="horizontal">
 
-                     </LinearLayout>
+                             <include layout="@layout/layout_placeholder_dashboard" />
 
-                 </com.facebook.shimmer.ShimmerFrameLayout>&ndash;&gt;
+                         </LinearLayout>
 
-                 <android.support.v7.widget.RecyclerView
-                     android:id="@+id/recycler_view"
-                     android:layout_width="match_parent"
-                     android:layout_height="wrap_content"
-                     android:layout_below="@+id/description_text_calender_list"
-                     android:layout_margin="10dp"
-                     android:scrollbars="vertical"></android.support.v7.widget.RecyclerView>
+                     </com.facebook.shimmer.ShimmerFrameLayout>&ndash;&gt;
 
-             </RelativeLayout>
-         </android.support.v7.widget.CardView>-->
+                     <android.support.v7.widget.RecyclerView
+                         android:id="@+id/recycler_view"
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:layout_below="@+id/description_text_calender_list"
+                         android:layout_margin="10dp"
+                         android:scrollbars="vertical"></android.support.v7.widget.RecyclerView>
 
-        <!--<android.support.v7.widget.CardView
-            android:id="@+id/reminderCard"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="5dp"
-            android:background="@color/Black">
+                 </RelativeLayout>
+             </android.support.v7.widget.CardView>-->
 
-            <RelativeLayout
+            <!--<android.support.v7.widget.CardView
+                android:id="@+id/reminderCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
                 android:background="@color/Black">
 
-                <TextView
-                    android:id="@+id/heading_text_reminder_list"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:text="Today's top 50 videos "
-                    android:textColor="@color/app_theme"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/description_text_reminder_list"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/heading_text_reminder_list"
-                    android:layout_marginLeft="10dp"
-                    android:text="Created by company and others user"
-                    android:textColor="#6e6e6e"
-                    android:textSize="13sp" />
-
                 <RelativeLayout
-                    android:id="@+id/view_more_button_reminder_layout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp">
-
-                    <Button
-                        android:id="@+id/view_more_reminder_text"
-                        android:layout_width="65dp"
-                        android:layout_height="22dp"
-                        android:background="@drawable/subscribebuttonbg"
-                        android:text="VIEW ALL"
-                        android:textColor="@color/pure_white"
-                        android:textSize="11sp" />
-                </RelativeLayout>
-
-               &lt;!&ndash; <com.facebook.shimmer.ShimmerFrameLayout
-                    android:id="@+id/shimmer_view_container1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/description_text_reminder_list"
-                    android:layout_margin="10dp"
-                    android:orientation="vertical"
-                    android:layout_gravity="center"
-                    shimmer:duration="1000">
+                    android:background="@color/Black">
 
-                    &lt;!&ndash; Adding 3 rows of placeholders &ndash;&gt;
-                    <LinearLayout
+                    <TextView
+                        android:id="@+id/heading_text_reminder_list"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Today's top 50 videos "
+                        android:textColor="@color/app_theme"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/description_text_reminder_list"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/heading_text_reminder_list"
+                        android:layout_marginLeft="10dp"
+                        android:text="Created by company and others user"
+                        android:textColor="#6e6e6e"
+                        android:textSize="13sp" />
+
+                    <RelativeLayout
+                        android:id="@+id/view_more_button_reminder_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="10dp">
+
+                        <Button
+                            android:id="@+id/view_more_reminder_text"
+                            android:layout_width="65dp"
+                            android:layout_height="22dp"
+                            android:background="@drawable/subscribebuttonbg"
+                            android:text="VIEW ALL"
+                            android:textColor="@color/pure_white"
+                            android:textSize="11sp" />
+                    </RelativeLayout>
+
+                   &lt;!&ndash; <com.facebook.shimmer.ShimmerFrameLayout
+                        android:id="@+id/shimmer_view_container1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:layout_below="@+id/description_text_reminder_list"
+                        android:layout_margin="10dp"
+                        android:orientation="vertical"
+                        android:layout_gravity="center"
+                        shimmer:duration="1000">
 
-                        <include layout="@layout/layout_placeholder_dashboard" />
+                        &lt;!&ndash; Adding 3 rows of placeholders &ndash;&gt;
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
 
-                    </LinearLayout>
+                            <include layout="@layout/layout_placeholder_dashboard" />
 
-                </com.facebook.shimmer.ShimmerFrameLayout>&ndash;&gt;
+                        </LinearLayout>
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recycler_view_reminder"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/description_text_reminder_list"
-                    android:layout_margin="10dp"
-                    android:scrollbars="vertical">
+                    </com.facebook.shimmer.ShimmerFrameLayout>&ndash;&gt;
 
-                </android.support.v7.widget.RecyclerView>
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycler_view_reminder"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/description_text_reminder_list"
+                        android:layout_margin="10dp"
+                        android:scrollbars="vertical">
 
-            </RelativeLayout>
-        </android.support.v7.widget.CardView>
--->
-        <!-- <android.support.v7.widget.CardView
-             android:id="@+id/alertCard"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:layout_marginLeft="5dp"
-             android:layout_marginRight="5dp"
-             android:layout_marginTop="5dp"
-             android:background="@color/Black">
+                    </android.support.v7.widget.RecyclerView>
 
-             <RelativeLayout
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+    -->
+            <!-- <android.support.v7.widget.CardView
+                 android:id="@+id/alertCard"
                  android:layout_width="match_parent"
                  android:layout_height="wrap_content"
+                 android:layout_marginLeft="5dp"
+                 android:layout_marginRight="5dp"
+                 android:layout_marginTop="5dp"
                  android:background="@color/Black">
 
-                 <TextView
-                     android:id="@+id/heading_text_alert_list"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:layout_marginLeft="10dp"
-                     android:layout_marginTop="10dp"
-                     android:text="My Video"
-                     android:textColor="@color/app_theme"
-                     android:textSize="16sp"
-                     android:textStyle="bold" />
-
-                 <TextView
-                     android:id="@+id/description_text_alert_list"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:layout_below="@+id/heading_text_alert_list"
-                     android:layout_marginLeft="10dp"
-                     android:text="Created by company and others user"
-                     android:textColor="#6e6e6e"
-                     android:textSize="13sp" />
-
                  <RelativeLayout
-                     android:id="@+id/view_more_button_alert_layout"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:layout_alignParentRight="true"
-                     android:layout_marginRight="10dp"
-                     android:layout_marginTop="10dp">
-
-                     <Button
-                         android:id="@+id/view_more_alert_text"
-                         android:layout_width="65dp"
-                         android:layout_height="22dp"
-                         android:background="@drawable/subscribebuttonbg"
-                         android:text="VIEW ALL"
-                         android:textColor="@color/pure_white"
-                         android:textSize="11sp" />
-                 </RelativeLayout>
-
-                &lt;!&ndash; <com.facebook.shimmer.ShimmerFrameLayout
-                     android:id="@+id/shimmer_view_container2"
                      android:layout_width="match_parent"
                      android:layout_height="wrap_content"
-                     android:layout_below="@+id/description_text_alert_list"
-                     android:layout_margin="10dp"
-                     android:layout_gravity="center"
-                     android:orientation="vertical"
-                     shimmer:duration="1000">
+                     android:background="@color/Black">
 
-                     &lt;!&ndash; Adding 3 rows of placeholders &ndash;&gt;
-                     <LinearLayout
+                     <TextView
+                         android:id="@+id/heading_text_alert_list"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_marginLeft="10dp"
+                         android:layout_marginTop="10dp"
+                         android:text="My Video"
+                         android:textColor="@color/app_theme"
+                         android:textSize="16sp"
+                         android:textStyle="bold" />
+
+                     <TextView
+                         android:id="@+id/description_text_alert_list"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_below="@+id/heading_text_alert_list"
+                         android:layout_marginLeft="10dp"
+                         android:text="Created by company and others user"
+                         android:textColor="#6e6e6e"
+                         android:textSize="13sp" />
+
+                     <RelativeLayout
+                         android:id="@+id/view_more_button_alert_layout"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_alignParentRight="true"
+                         android:layout_marginRight="10dp"
+                         android:layout_marginTop="10dp">
+
+                         <Button
+                             android:id="@+id/view_more_alert_text"
+                             android:layout_width="65dp"
+                             android:layout_height="22dp"
+                             android:background="@drawable/subscribebuttonbg"
+                             android:text="VIEW ALL"
+                             android:textColor="@color/pure_white"
+                             android:textSize="11sp" />
+                     </RelativeLayout>
+
+                    &lt;!&ndash; <com.facebook.shimmer.ShimmerFrameLayout
+                         android:id="@+id/shimmer_view_container2"
                          android:layout_width="match_parent"
                          android:layout_height="wrap_content"
-                         android:orientation="vertical">
+                         android:layout_below="@+id/description_text_alert_list"
+                         android:layout_margin="10dp"
+                         android:layout_gravity="center"
+                         android:orientation="vertical"
+                         shimmer:duration="1000">
 
-                         <include layout="@layout/layout_placeholder_dashboard" />
+                         &lt;!&ndash; Adding 3 rows of placeholders &ndash;&gt;
+                         <LinearLayout
+                             android:layout_width="match_parent"
+                             android:layout_height="wrap_content"
+                             android:orientation="vertical">
 
-                     </LinearLayout>
+                             <include layout="@layout/layout_placeholder_dashboard" />
 
-                 </com.facebook.shimmer.ShimmerFrameLayout>&ndash;&gt;
+                         </LinearLayout>
 
-                 <android.support.v7.widget.RecyclerView
-                     android:id="@+id/recycler_view_alert"
-                     android:layout_width="match_parent"
-                     android:layout_height="wrap_content"
-                     android:layout_below="@+id/description_text_alert_list"
-                     android:layout_margin="10dp"
-                     android:scrollbars="vertical"></android.support.v7.widget.RecyclerView>
+                     </com.facebook.shimmer.ShimmerFrameLayout>&ndash;&gt;
 
-             </RelativeLayout>
-         </android.support.v7.widget.CardView>-->
-    </LinearLayout>
+                     <android.support.v7.widget.RecyclerView
+                         android:id="@+id/recycler_view_alert"
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:layout_below="@+id/description_text_alert_list"
+                         android:layout_margin="10dp"
+                         android:scrollbars="vertical"></android.support.v7.widget.RecyclerView>
+
+                 </RelativeLayout>
+             </android.support.v7.widget.CardView>-->
 
 
-</android.support.v4.widget.NestedScrollView>
+        </LinearLayout>
+
+
+    </android.support.v4.widget.NestedScrollView>
+</RelativeLayout>

@@ -71,7 +71,7 @@
     <string name="phone">Enter OTP</string>
     <string name="number">+91-4445556987</string>
     <string name="ok">OK</string>
-    <string name="profile_button_text">Update</string>
+    <string name="profile_button_text">Update Profile</string>
     <string name="profileupdate_toastmsg">Profile updated Sucessfully!!!</string>
     <string name="profileimageuploaded">Profile Image Updated Sucessfully!!</string>
     <string name="action_edit">Edit</string>
@@ -119,4 +119,11 @@
     <string name="recommended">Recommended</string>
     <string name="created_by_company_and_others_user">Created by company and others user</string>
     <string name="view_all">VIEW ALL</string>
+    <string name="signin_text">Sign in</string>
+
+    <string name="download_start_error">Failed to start download</string>
+    <string name="no_dialog">No</string>
+    <string name="yes_dialog">Yes</string>
+    <string name="are_you_sure_want_to">Are you sure want to</string>
+    <string name="log_out">logout ?</string>
 </resources>

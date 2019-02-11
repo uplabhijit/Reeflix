@@ -1,9 +1,6 @@
 package com.underscoretec.reeflix.fragment;
 
-import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -17,9 +14,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import android.view.Window;
-import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -29,7 +25,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.underscoretec.reeflix.CategoryAdapter;
 import com.underscoretec.reeflix.Constant.ApiConstant;
 
-import com.underscoretec.reeflix.Login;
 import com.underscoretec.reeflix.MainSliderAdapter;
 import com.underscoretec.reeflix.PicassoImageLoadingService;
 import com.underscoretec.reeflix.R;
@@ -55,7 +50,7 @@ public class DashboardFragment extends Fragment {
     public RecyclerView recycler_view, recycler_view_reminder, recycler_view_alert;
     public RecyclerView categoryRecyclerView;
     private CategoryAdapter categoryAdapter;
-
+    public ProgressBar progressbar;
     private ArrayList<Category> categoryList = new ArrayList<>();
     private ProgressDialog progress;
     static final String REQ_TAG = "LIBRARYACTIVITY";
@@ -126,13 +121,13 @@ public class DashboardFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
-
         Slider.init(new PicassoImageLoadingService(getContext()));
 
         /*To init ui elements*/
         typeLayout = view.findViewById(R.id.typeLayout);
         categoryRecyclerView = view.findViewById(R.id.category_recycler_view);
         slider = view.findViewById(R.id.banner_slider1);
+        progressbar = (ProgressBar) view.findViewById(R.id.progressBar);
         slider.setAdapter(new MainSliderAdapter());
         requestQueue = RequestQueueSingleton.getInstance(getActivity()).getRequestQueue();
         categoryAdapter = new CategoryAdapter(categoryList, getContext());
@@ -142,9 +137,6 @@ public class DashboardFragment extends Fragment {
         categoryRecyclerView.setItemAnimator(new DefaultItemAnimator());
         categoryRecyclerView.setAdapter(categoryAdapter);
         categoryRecyclerView.setNestedScrollingEnabled(false);
-
-
-
         return view;
     }
 
@@ -163,16 +155,18 @@ public class DashboardFragment extends Fragment {
         if (SDUtility.isNetworkAvailable(getContext())) {
             try {
                 if (SDUtility.isConnected()) {
-                    progress = new ProgressDialog(getContext());
+                    /*progress = new ProgressDialog(getContext());
                     progress.setMessage("loading");
                     progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
-                    progress.show();
+                    progress.show();*/
+                    progressbar.setVisibility(View.VISIBLE);
                     //To get url for video
                     String url = ApiConstant.video_dashboard_api;
                     System.out.println(url);
                     JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                             (JSONObject response) -> {
-                                progress.dismiss();
+                                /* progress.dismiss();*/
+                                progressbar.setVisibility(View.GONE);
                                 typeLayout.setVisibility(View.VISIBLE);
                                 try {
                                     JSONObject serverResp = new JSONObject(response.toString());
@@ -192,13 +186,15 @@ public class DashboardFragment extends Fragment {
                                     categoryRecyclerView.setAdapter(categoryAdapter);
                                 } catch (JSONException e) {
                                     // TODO Auto-generated catch block
-                                    progress.dismiss();
+                                    /* progress.dismiss();*/
+                                    progressbar.setVisibility(View.GONE);
                                     e.printStackTrace();
                                     //To display exception message
                                     SDUtility.displayExceptionMessage(e.getMessage(), getContext());
                                 }
                             }, error -> {
-                        progress.dismiss();
+                        /*progress.dismiss();*/
+                        progressbar.setVisibility(View.GONE);
                         System.out.println("Error getting response");
                         System.out.println(error.getMessage());
                         SDUtility.displayExceptionMessage(error.getMessage(), getContext());

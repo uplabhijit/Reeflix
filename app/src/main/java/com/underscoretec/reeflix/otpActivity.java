@@ -5,8 +5,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -29,6 +33,7 @@ public class otpActivity extends AppCompatActivity {
     public Button btn_verifyactivationotp;
     public EditText_Roboto_Regular otp;
     private ProgressDialog progress;
+    private ProgressBar progressBar;
     private RequestQueue requestQueue;
     static final String REQ_TAG = "VERIFYOTPACTIVITY";
 
@@ -37,8 +42,28 @@ public class otpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_otp);
+
+        /*function call to init ui element*/
+        initUiElement();
+    }
+
+    /*function call to init ui element*/
+    private void initUiElement() {
         btn_verifyactivationotp = findViewById(R.id.btn_verifyactivationotp);
+        progressBar = findViewById(R.id.progressBar);
         otp = findViewById(R.id.otp);
+        //keyboard listener
+        otp.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    System.out.println("trace for login");
+                    verifyOtp(null);
+                    return true;
+                }
+                return false;
+            }
+        });
         btn_verifyactivationotp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -61,11 +86,12 @@ public class otpActivity extends AppCompatActivity {
             try {
                 if (SDUtility.isConnected()) {
                     if (otp.getText().toString().length() > 0) {
-                        progress = new ProgressDialog(this);
+                       /* progress = new ProgressDialog(this);
                         //TODO: replace with string
                         progress.setMessage(getResources().getString(R.string.verify_otp_loader));
                         progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
-                        progress.show();
+                        progress.show();*/
+                        progressBar.setVisibility(View.VISIBLE);
                         JSONObject json = new JSONObject();
                         try {
                             json.put("phoneNumber", getIntent().getExtras().getString("phoneNumber"));
@@ -77,7 +103,7 @@ public class otpActivity extends AppCompatActivity {
                         String url = ApiConstant.api_verifyotpduringregistration_url;
                         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, url, json,
                                 response -> {
-                                    progress.dismiss();
+                                    progressBar.setVisibility(View.GONE);
                                     System.out.println(response.toString());
                                     try {
                                         JSONObject serverResp = new JSONObject(response.toString());
@@ -103,13 +129,13 @@ public class otpActivity extends AppCompatActivity {
                                         }
                                     } catch (JSONException e) {
                                         // TODO Auto-generated catch block
-                                        progress.dismiss();
+                                        progressBar.setVisibility(View.GONE);
                                         e.printStackTrace();
                                         System.out.println("Error getting response || Error msg:-" + e.getMessage());
                                         SDUtility.displayExceptionMessage(e.getMessage(), otpActivity.this);
                                     }
                                 }, error -> {
-                            progress.dismiss();
+                            progressBar.setVisibility(View.GONE);
                             System.out.println("Error getting response");
                             System.out.println("Error getting response || Error msg:-" + error.getMessage());
                             SDUtility.displayExceptionMessage(error.getMessage(), otpActivity.this);

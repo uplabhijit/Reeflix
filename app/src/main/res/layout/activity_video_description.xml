@@ -8,6 +8,19 @@
     tools:context=".VideoDescription">
 
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
+        android:layout_centerVertical="true"
+        android:clickable="false"
+        android:progressDrawable="@drawable/circular_progress_bar"
+        android:visibility="gone" />
+
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -22,6 +35,7 @@
                 android:id="@+id/videoLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
 
                 <!-- origin height = 190 -->
                 <ImageView

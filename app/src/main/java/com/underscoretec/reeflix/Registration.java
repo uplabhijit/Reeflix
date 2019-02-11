@@ -2,7 +2,6 @@ package com.underscoretec.reeflix;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -13,9 +12,10 @@ import android.text.Html;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,9 +46,9 @@ import pub.devrel.easypermissions.EasyPermissions;
 
 public class Registration extends AppCompatActivity implements SingleUploadBroadcastReceiver.Delegate {
 
-    public ImageView camerafab;
     public TextView termsandcondition;
-    private ProgressDialog progressDialog;
+    /* private ProgressDialog progressDialog;*/
+    public ProgressBar progressbar;
     static final String REQ_TAG = "VACTIVITY";
     public String profileImageId;
     ImagePicker imagePicker;
@@ -67,7 +67,6 @@ public class Registration extends AppCompatActivity implements SingleUploadBroad
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_registration);
-
         registrationActivity = this;
 
         /*function call to init ui elements*/
@@ -75,16 +74,13 @@ public class Registration extends AppCompatActivity implements SingleUploadBroad
 
         /*To initialize image picker*/
         imagePicker = new ImagePicker();
-
         //To call request queue for volley
         requestQueue = RequestQueueSingleton.getInstance(this.getApplicationContext())
                 .getRequestQueue();
-
         //To initialize receiver
         uploadReceiver = new SingleUploadBroadcastReceiver();
-
         //Function call to choose image
-        camerafab.setOnClickListener(view ->
+        croppedImageView.setOnClickListener(view ->
 
                 /*function call to open image picker*/
                 openImagePicker());
@@ -124,14 +120,30 @@ public class Registration extends AppCompatActivity implements SingleUploadBroad
         input_address = findViewById(R.id.input_address);
         input_phonenumber = findViewById(R.id.input_phonenumber);
         input_zipcode = findViewById(R.id.input_zipcode);
+        //keyboard listener
+        input_zipcode.setOnEditorActionListener (new TextView.OnEditorActionListener () {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+
+                    System.out.println ("trace for register");
+
+                    register (null);
+                    return true;
+                }
+                return false;
+            }
+        });
         input_password = findViewById(R.id.input_password);
         profileImageProgress = findViewById(R.id.profile_imageview_progressbar);
+        progressbar = findViewById(R.id.progressBar);
         termsandcondition = findViewById(R.id.termsandcondition);
         Text = Html.fromHtml("By continuing, you agree to our " +
                 "<a href='https://underscoretec.com/'>Terms of use and Privacy policies </a>");
         termsandcondition.setMovementMethod(LinkMovementMethod.getInstance());
         termsandcondition.setText(Text);
-        camerafab = findViewById(R.id.camerafab);
+        /*camerafab = findViewById(R.id.camerafab);*/
         //To get deviceId
     }
 
@@ -190,8 +202,9 @@ public class Registration extends AppCompatActivity implements SingleUploadBroad
     public void onProgress(int progress) {
         Log.d("PROGRESS", "progress = " + progress);
         profileImageProgress.setVisibility(View.VISIBLE);
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setProgress(progress);
+       /* progressDialog = new ProgressDialog(this);
+        progressDialog.setProgress(progress);*/
+       /* progressbar.setVisibility(View.VISIBLE);*/
     }
 
     @Override
@@ -209,7 +222,7 @@ public class Registration extends AppCompatActivity implements SingleUploadBroad
 
     @Override
     public void onCompleted(int serverResponseCode, byte[] serverResponseBody) {
-        progressDialog.dismiss();
+        /*progressDialog.dismiss();*/
         profileImageProgress.setVisibility(View.GONE);
         String str = new String(serverResponseBody);
         try {
@@ -258,10 +271,10 @@ public class Registration extends AppCompatActivity implements SingleUploadBroad
                     if (SDUtility.isValidEmail(input_email.getText().toString())) {
                         if (SDUtility.isValidPassword(input_password.getText().toString())) {
                             if (SDUtility.isValidphoneNumber(input_phonenumber.getText().toString())) {
-                                progressDialog = new ProgressDialog(this);
+                                /*progressDialog = new ProgressDialog(this);
                                 progressDialog.setMessage(getString(R.string.registeringwaitloader_msg));
-                                progressDialog.setCancelable(false); // disable dismiss by tapping outside of the dialog
-                                progressDialog.show();
+                                progressDialog.setCancelable(false); */// disable dismiss by tapping outside of the dialog
+                                progressbar.setVisibility(View.VISIBLE);
                                 JSONObject json = new JSONObject();
                                 try {
                                     json.put("name", input_name.getText().toString());
@@ -280,7 +293,8 @@ public class Registration extends AppCompatActivity implements SingleUploadBroad
                                 String url = ApiConstant.api_registration_url;
                                 JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, json,
                                         response -> {
-                                            progressDialog.dismiss();
+                                            /* progressDialog.dismiss();*/
+                                            progressbar.setVisibility(View.GONE);
                                             //serverResp.setText("String Response : "+ response.toString());
                                             System.out.println(response.toString());
                                             try {
@@ -298,22 +312,24 @@ public class Registration extends AppCompatActivity implements SingleUploadBroad
                                                     editor.commit();
                                                     boolean status = pref.getBoolean("loginStatus", false);
                                                     if (status) {*/
-                                                        Intent fp = new Intent(Registration.this, otpActivity.class);
-                                                        fp.putExtra("phoneNumber",response.getJSONObject("result").getString("phoneNumber"));
-                                                        fp.putExtra("otp",response.getJSONObject("result").getString("otp"));
-                                                        startActivity(fp);
+                                                    Intent fp = new Intent(Registration.this, otpActivity.class);
+                                                    fp.putExtra("phoneNumber", response.getJSONObject("result").getString("phoneNumber"));
+                                                    fp.putExtra("otp", response.getJSONObject("result").getString("otp"));
+                                                    startActivity(fp);
                                                         /*finish();
                                                         Login.mainActivity.finish();*/
-                                                  /*  }*/
+                                                    /*  }*/
                                                 }
                                             } catch (JSONException e) {
                                                 // TODO Auto-generated catch block
-                                                progressDialog.dismiss();
+                                                /* progressDialog.dismiss();*/
+                                                progressbar.setVisibility(View.GONE);
                                                 e.printStackTrace();
                                                 SDUtility.displayExceptionMessage(e.getMessage(), Registration.this);
                                             }
                                         }, error -> {
-                                    progressDialog.dismiss();
+                                    /* progressDialog.dismiss();*/
+                                    progressbar.setVisibility(View.GONE);
                                     System.out.println("Error getting response");
                                     Toast.makeText(Registration.this, R.string.failedregistration_stringmsg, Toast.LENGTH_SHORT).show();
                                 }) {    //this is the part, that adds the header to the request

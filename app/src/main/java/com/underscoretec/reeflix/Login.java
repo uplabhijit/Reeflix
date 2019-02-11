@@ -1,12 +1,14 @@
 package com.underscoretec.reeflix;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,7 +29,8 @@ public class Login extends AppCompatActivity {
 
     public TextView createaccount;
     public EditText emailText, passText;
-    private ProgressDialog progress;
+    /* private AlertDialog dialog;*/
+    public ProgressBar progressbar;
     private RequestQueue requestQueue;
     static final String REQ_TAG = "LOGINACTIVITY";
     public boolean status;
@@ -49,6 +52,19 @@ public class Login extends AppCompatActivity {
     private void initUiElement() {
         emailText = findViewById(R.id.emailText);
         passText = findViewById(R.id.passText);
+        progressbar = (ProgressBar) findViewById(R.id.progressBar);
+        passText.setOnEditorActionListener(new EditText.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if (i == EditorInfo.IME_ACTION_DONE) {
+                    // Do you job here which you want to done through event
+                    System.out.println("trace for login");
+                    login(null);
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     //To check login status
@@ -81,11 +97,12 @@ public class Login extends AppCompatActivity {
                 if (SDUtility.isConnected()) {
                     if (SDUtility.isValidEmail(emailText.getText().toString())) {
                         if (SDUtility.isValidPassword(passText.getText().toString())) {
-                            progress = new ProgressDialog(this);
+                            /*progress = new ProgressDialog(this);
                             //TODO: replace with string
                             progress.setMessage(getResources().getString(R.string.login_loader));
                             progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
-                            progress.show();
+                            progress.show();*/
+                            progressbar.setVisibility(View.VISIBLE);
                             JSONObject json = new JSONObject();
                             try {
                                 json.put("phoneNumber", emailText.getText().toString());
@@ -98,7 +115,8 @@ public class Login extends AppCompatActivity {
                             String url = ApiConstant.api_login_url;
                             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, json,
                                     response -> {
-                                        progress.dismiss();
+                                        /*dialog.dismiss();*/
+                                        progressbar.setVisibility(View.GONE);
                                         System.out.println(response.toString());
                                         try {
                                             JSONObject serverResp = new JSONObject(response.toString());
@@ -124,13 +142,15 @@ public class Login extends AppCompatActivity {
                                             }
                                         } catch (JSONException e) {
                                             // TODO Auto-generated catch block
-                                            progress.dismiss();
                                             e.printStackTrace();
+                                            /* dialog.dismiss();*/
+                                            progressbar.setVisibility(View.GONE);
                                             System.out.println("Error getting response || Error msg:-" + e.getMessage());
                                             SDUtility.displayExceptionMessage(e.getMessage(), Login.this);
                                         }
                                     }, error -> {
-                                progress.dismiss();
+                                /* dialog.dismiss();*/
+                                progressbar.setVisibility(View.GONE);
                                 System.out.println("Error getting response");
                                 System.out.println("Error getting response || Error msg:-" + error.getMessage());
                                 SDUtility.displayExceptionMessage(error.getMessage(), Login.this);

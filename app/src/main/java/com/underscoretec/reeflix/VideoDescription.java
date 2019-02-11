@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,6 +46,7 @@ public class VideoDescription extends AppCompatActivity {
     public ImageView subscribe, image_movie_poster, arrow;
     private Bitmap bmp;
     private ProgressDialog progress;
+    private ProgressBar progressBar;
     public RecyclerView content_recycler_view;
     private VideoListAdapter VideoListAdapter;
     private ArrayList<Video> dummyList = new ArrayList<>();
@@ -109,6 +111,7 @@ public class VideoDescription extends AppCompatActivity {
         subscribe = findViewById(R.id.subscribe);
         arrow = findViewById(R.id.arrow);
         content_recycler_view = findViewById(R.id.content_recycler_view);
+        progressBar = findViewById(R.id.progressBar);
     }
 
     @Override
@@ -123,16 +126,18 @@ public class VideoDescription extends AppCompatActivity {
         if (SDUtility.isNetworkAvailable(VideoDescription.this)) {
             try {
                 if (SDUtility.isConnected()) {
-                    progress = new ProgressDialog(VideoDescription.this);
+                    /*progress = new ProgressDialog(VideoDescription.this);
                     progress.setMessage("loading");
                     progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
-                    progress.show();
+                    progress.show();*/
+                    progressBar.setVisibility(View.VISIBLE);
                     //To get url for video
                     String url = ApiConstant.video_dashboard_api;
                     System.out.println(url);
                     JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                             (JSONObject response) -> {
-                                progress.dismiss();
+                                /*  progress.dismiss();*/
+                                progressBar.setVisibility(View.GONE);
                                 try {
                                     JSONObject serverResp = new JSONObject(response.toString());
                                     System.out.println("success result: " + serverResp.toString());
@@ -172,13 +177,13 @@ public class VideoDescription extends AppCompatActivity {
                                     }
                                 } catch (JSONException e) {
                                     // TODO Auto-generated catch block
-                                    progress.dismiss();
+                                    progressBar.setVisibility(View.GONE);
                                     e.printStackTrace();
                                     //To display exception message
                                     SDUtility.displayExceptionMessage(e.getMessage(), VideoDescription.this);
                                 }
                             }, error -> {
-                        progress.dismiss();
+                        progressBar.setVisibility(View.GONE);
                         /*mShimmerViewContainer.stopShimmerAnimation();
                         mShimmerViewContainer.setVisibility(View.GONE);*/
                         System.out.println("Error getting response");

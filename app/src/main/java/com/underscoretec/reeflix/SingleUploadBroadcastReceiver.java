@@ -4,6 +4,8 @@ import net.gotev.uploadservice.UploadServiceBroadcastReceiver;
 
 public class SingleUploadBroadcastReceiver extends UploadServiceBroadcastReceiver {
 
+
+
     public interface Delegate {
         void onProgress(int progress);
 

@@ -25,7 +25,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.underscoretec.reeflix.Movie;
 import com.underscoretec.reeflix.R;
-import com.underscoretec.reeflix.app.MyApplication;
 
 import org.json.JSONArray;
 
@@ -108,7 +107,7 @@ public class StoreFragment extends Fragment {
                 Toast.makeText(getActivity(), "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-        MyApplication.getInstance().addToRequestQueue(request);
+       /* MyApplication.getInstance().addToRequestQueue(request);*/
     }
 
     public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {

@@ -19,8 +19,8 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="back_" />
-                            <entry key="sourceFile" value="$PROJECT_DIR$/../../../icon_Search/Back-01.svg" />
+                            <entry key="outputName" value="editicon" />
+                            <entry key="sourceFile" value="$PROJECT_DIR$/../../../Profile_edit-01.svg" />
                           </map>
                         </option>
                       </PersistentState>

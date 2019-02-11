@@ -2,7 +2,6 @@ package com.underscoretec.reeflix;
 
 import android.app.ProgressDialog;
 import android.app.SearchManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -13,7 +12,6 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
@@ -34,11 +32,10 @@ import com.underscoretec.reeflix.fragment.DashboardFragment;
 import com.underscoretec.reeflix.fragment.GiftsFragment;
 import com.underscoretec.reeflix.fragment.ProfileFragment;
 import com.underscoretec.reeflix.helper.BottomNavigationBehavior;
-import com.underscoretec.reeflix.models.Category;
 import com.underscoretec.reeflix.utility.SDUtility;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -50,23 +47,22 @@ public class HomeActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
     private ListView listView;
-    public  SearchView searchView;
+    public SearchView searchView;
     private ArrayList<String> stringArrayList;
     private ListViewAdapter adapter;
     private ProgressDialog progress;
     private RequestQueue requestQueue;
+    public MenuItem myActionMenuItem;
     static final String REQ_TAG = "SEARCHACTIVITY";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
         loadFragment(new DashboardFragment());
         listView = (ListView) findViewById(R.id.list_items);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-
         requestQueue = RequestQueueSingleton.getInstance(this.getApplicationContext()).getRequestQueue();
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         // attaching bottom sheet behaviour - hide / show on scroll
@@ -74,25 +70,19 @@ public class HomeActivity extends AppCompatActivity {
         layoutParams.setBehavior(new BottomNavigationBehavior());
         // load the store fragment by default
 
-       /* adapter = new ListViewAdapter(this, R.layout.item_listview, stringArrayList);*/
+        /* adapter = new ListViewAdapter(this, R.layout.item_listview, stringArrayList);*/
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(HomeActivity.this, (String) parent.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
                 listView.setVisibility(View.GONE);
-                searchView.setQuery((String) parent.getItemAtPosition(position),true);
-
+                searchView.setQuery((String) parent.getItemAtPosition(position), true);
             }
         });
-
-
         toolbar.setLogo(R.drawable.dashboardreeflix);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
-
-
-
     }
 
     private void setData() {
@@ -103,7 +93,6 @@ public class HomeActivity extends AppCompatActivity {
         stringArrayList.add("Tran Ha");
         stringArrayList.add("Vu Danh");
         stringArrayList.add("Minh Meo");*/
-
         //To check internet connection
         if (SDUtility.isNetworkAvailable(HomeActivity.this)) {
             try {
@@ -113,13 +102,12 @@ public class HomeActivity extends AppCompatActivity {
                     progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
                     progress.show();
                     //To get url for video
-                    String url = ApiConstant.search_api+searchView.getQuery().toString();
-
+                    String url = ApiConstant.search_api + searchView.getQuery().toString();
                     System.out.println(url);
                     JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                             (JSONObject response) -> {
                                 progress.dismiss();
-                                System.out.println("response>>>>>>>>"+response);
+                                System.out.println("response>>>>>>>>" + response);
 
                                /* try {
                                     JSONObject serverResp = new JSONObject(response.toString());
@@ -174,19 +162,16 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.dashboard_menu, menu);
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        MenuItem myActionMenuItem = menu.findItem(R.id.action_searches);
+        myActionMenuItem = menu.findItem(R.id.action_searches);
         searchView = (SearchView) myActionMenuItem.getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-
-
                 return false;
             }
 
@@ -194,7 +179,7 @@ public class HomeActivity extends AppCompatActivity {
             public boolean onQueryTextChange(String newText) {
                 System.out.println("gverbhjrhbfv" + newText);
                 if (TextUtils.isEmpty(newText)) {
-                   /* adapter.filter("");*/
+                    /* adapter.filter("");*/
                     listView.clearTextFilter();
                 } else {
                     listView.setVisibility(View.VISIBLE);
@@ -228,23 +213,18 @@ public class HomeActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_shop:
-                    toolbar.setLogo(R.drawable.dashboardreeflix);
-                    toolbar.setTitle("");
                     dashboardFragment = new DashboardFragment();
                     loadFragment(dashboardFragment);
                     return true;
                 case R.id.navigation_gifts:
-                    toolbar.setTitle("Favourites");
                     giftsfragment = new GiftsFragment();
                     loadFragment(giftsfragment);
                     return true;
                 case R.id.navigation_cart:
-                    toolbar.setTitle("Cart");
                     cartfragment = new CartFragment();
                     loadFragment(cartfragment);
                     return true;
                 case R.id.navigation_profile:
-                    toolbar.setTitle("profile");
                     profilefragment = new ProfileFragment();
                     loadFragment(profilefragment);
                     return true;
@@ -268,7 +248,6 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
         System.out.println("kn activity result>>>>>>>>>");
         System.out.println("result code>>>>" + requestCode);
         System.out.println("result code>>>>" + resultCode);
@@ -276,6 +255,8 @@ public class HomeActivity extends AppCompatActivity {
         System.out.println("---------------------dashboardFragment--------------------------" + dashboardFragment);
         System.out.println("---------------------giftsfragment--------------------------" + giftsfragment);
         System.out.println("---------------------cartfragment.--------------------------" + cartfragment);
+        profilefragment.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override

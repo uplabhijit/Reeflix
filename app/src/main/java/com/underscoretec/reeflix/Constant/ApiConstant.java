@@ -12,7 +12,7 @@ public class ApiConstant {
     public final static String video_view_all_api=reeflix_api_prefix+"categories/getByid?id=";
 
 
-    public final static String api_imageupload_url = reeflix_api_prefix + "image/upload";
+    public final static String api_imageupload_url = reeflix_api_prefix +"image/upload";
     public final static String getimage_url = reeflix_api_prefix + "image/download?id=";
 
     public final static String api_registration_url= reeflix_api_prefix+"user/create";
