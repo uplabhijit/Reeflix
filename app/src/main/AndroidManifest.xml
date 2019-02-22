@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.underscoretec.reeflix">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.reeflix">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -37,9 +36,11 @@
             </intent-filter>
             <meta-data
                 android:name="android.app.searchable"
-                android:resource="@xml/searchable"></meta-data>
+                android:resource="@xml/searchable">
 
+            </meta-data>
         </activity>
+
         <activity
             android:name=".SplashScreen"
             android:screenOrientation="portrait"
@@ -50,15 +51,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".ViewAllVideoActivity"
             android:label="Video List" />
+
         <activity android:name=".VideoContent" />
+
         <activity
             android:name=".Login"
             android:windowSoftInputMode="stateHidden">
 
         </activity>
+
         <activity android:name=".Registration" />
         <activity android:name=".otpActivity" />
         <activity android:name=".ForgotPasswordActivity" />
@@ -76,7 +81,6 @@
             android:name="com.google.android.exoplayer2.scheduler.PlatformScheduler$PlatformSchedulerService"
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE" />
-
     </application>
 
 </manifest>

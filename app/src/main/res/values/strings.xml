@@ -41,7 +41,7 @@
     <string name="password_hinttext">Password</string>
     <string name="sign_in_button_text">Sign in</string>
     <string name="forgot_password_text">Forgot Password?</string>
-    <string name="create_account_text">Create New Accont</string>
+    <string name="create_account_text">Create New Account</string>
     <string name="sign_in_with_text">Sign in with</string>
 
     <!-->Registartion strings <!-->
@@ -126,4 +126,7 @@
     <string name="yes_dialog">Yes</string>
     <string name="are_you_sure_want_to">Are you sure want to</string>
     <string name="log_out">logout ?</string>
+
+
+    <string name="ad_tag_url"><![CDATA[https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dlinear&correlator=]]></string>
 </resources>
